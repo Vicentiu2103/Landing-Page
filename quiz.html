@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz Stil Antrenament - Ilie Vicențiu-Robert</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #90b8f4, #1976d2);
+      color: white;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 40px 20px 60px;
+      text-align: center;
+      flex-direction: column;
+    }
+    img.logo {
+      max-width: 300px;
+      margin-bottom: 10px;
+    }
+    .quiz-container {
+      background: rgba(0,0,0,0.75);
+      padding: 30px 30px 40px;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-weight: 900;
+      font-size: 2rem;
+    }
+    .quiz-question {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      min-height: 70px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    button.option-btn {
+      background: #1565c0;
+      border: none;
+      padding: 12px 15px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(21,101,192,0.5);
+      transition: background 0.3s ease;
+    }
+    button.option-btn:hover {
+      background: #42a5f5;
+      box-shadow: 0 6px 15px rgba(66,165,245,0.7);
+    }
+    .progress-bar {
+      height: 8px;
+      background: #42a5f5;
+      border-radius: 4px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background: #0d47a1;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    .result {
+      margin-top: 25px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      min-height: 130px;
+      white-space: pre-line;
+      text-align: left;
+    }
+    button.restart-btn {
+      margin-top: 25px;
+      background: #0d47a1;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(13,71,161,0.7);
+      transition: background 0.3s ease;
+    }
+    button.restart-btn:hover {
+      background: #1976d2;
+      box-shadow: 0 8px 20px rgba(25,118,210,0.9);
+    }
+    /* Buton Home */
+    button.home-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #1976d2;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(25,118,210,0.8);
+      transition: background 0.3s ease;
+      font-size: 0.9rem;
+    }
+    button.home-btn:hover {
+      background: #42a5f5;
+      box-shadow: 0 6px 18px rgba(66,165,245,0.9);
+    }
+  </style>
+</head>
+<body>
+  <img src="Logo.png" alt="Logo Ilie Vicențiu-Robert" class="logo" />
+
+  <div class="quiz-container">
+    <button class="home-btn" id="homeBtn">Acasă</button>
+
+    <h1>Quiz: Găsește-ți stilul de antrenament</h1>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div class="quiz-question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="result" id="result"></div>
+    <button class="restart-btn" id="restartBtn" style="display:none;">Reîncepe quiz-ul</button>
+  </div>
+
+<script>
+  // Butonul home duce la pagina principala
+  document.getElementById('homeBtn').addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+
+  const quizData = [
+    {
+      question: "Cum ai descrie nivelul tău de activitate zilnică?",
+      options: ["Sedentar (majoritatea timpului stai jos)", "Moderată (activitate fizică ocazională)", "Activ (exerciții regulate, mișcare zilnică)"]
+    },
+    {
+      question: "Câte zile pe săptămână ești dispus să aloci antrenamentului?",
+      options: ["1-2 zile", "3-4 zile", "5 sau mai multe zile"]
+    },
+    {
+      question: "Care este obiectivul tău principal în fitness?",
+      options: ["Slăbit și reducerea grăsimii", "Creșterea tonusului muscular", "Creșterea masei musculare"]
+    },
+    {
+      question: "Câte mese pe zi preferi să iei, în medie?",
+      options: ["1-2 mese", "3 mese", "4 sau mai multe mese"]
+    },
+    {
+      question: "Câte ore dormi în mod obișnuit pe noapte?",
+      options: ["Mai puțin de 6 ore", "6-8 ore", "Peste 8 ore"]
+    },
+    {
+      question: "Unde preferi să te antrenezi cel mai mult?",
+      options: ["Acasă", "La sală", "În aer liber"]
+    },
+    {
+      question: "Ce tip de antrenament preferi?",
+      options: ["Cardio și exerciții de anduranță", "Antrenament cu greutăți și forță", "Antrenament funcțional și mobilitate"]
+    },
+    {
+      question: "Cum te-ai descrie din punct de vedere al experienței în fitness?",
+      options: ["Începător", "Intermediar", "Avansat"]
+    },
+    {
+      question: "Ce tip de motivație funcționează cel mai bine pentru tine?",
+      options: ["Provocări și competiții", "Suport și ghidare personală", "Obiective clare și planificate"]
+    },
+    {
+      question: "Cât de important este pentru tine echilibrul între antrenament și odihnă?",
+      options: ["Nu prea contează, vreau să mă antrenez mult", "Încerc să mențin un echilibru rezonabil", "Este esențial pentru progresul meu"]
+    }
+  ];
+
+  let currentIndex = 0;
+  let answers = [];
+
+  const questionEl = document.getElementById('question');
+  const optionsEl = document.getElementById('options');
+  const progressEl = document.getElementById('progress');
+  const resultEl = document.getElementById('result');
+  const restartBtn = document.getElementById('restartBtn');
+
+  function showQuestion() {
+    const current = quizData[currentIndex];
+    questionEl.textContent = current.question;
+    optionsEl.innerHTML = '';
+    current.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.classList.add('option-btn');
+      btn.textContent = opt;
+      btn.addEventListener('click', () => selectOption(opt));
+      optionsEl.appendChild(btn);
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const percent = (currentIndex / quizData.length) * 100;
+    progressEl.style.width = percent + '%';
+  }
+
+  function selectOption(option) {
+    answers.push(option);
+    currentIndex++;
+    if (currentIndex < quizData.length) {
+      fadeOutIn(showQuestion);
+    } else {
+      showResult();
+    }
+  }
+
+  function fadeOutIn(callback) {
+    questionEl.style.opacity = 0;
+    optionsEl.style.opacity = 0;
+    setTimeout(() => {
+      callback();
+      questionEl.style.opacity = 1;
+      optionsEl.style.opacity = 1;
+    }, 300);
+  }
+
+  function showResult() {
+    questionEl.style.display = 'none';
+    optionsEl.style.display = 'none';
+    progressEl.style.width = '100%';
+
+    // Extragem raspunsul pentru zile de antrenament
+    let zileAntrenament = answers[1]; // index 1 = "Câte zile pe săptămână..."
+    let numarZile = 0;
+    if (zileAntrenament.includes("1-2")) numarZile = 2;
+    else if (zileAntrenament.includes("3-4")) numarZile = 4;
+    else if (zileAntrenament.includes("5")) numarZile = 6;
+
+    // Alte raspunsuri pentru personalizare
+    let sedentar = answers[0].includes("Sedentar");
+    let preferHome = answers[5].includes("Acasă");
+    let preferGym = answers[5].includes("La sală");
+    let preferOutdoors = answers[5].includes("În aer liber");
+    let obiectiv = answers[2]; // Obiectiv fitness
+    let experienta = answers[7]; // Nivel experienta
+    let echilibruOdihna = answers[9]; // Echilibru antrenament/odihna
+
+    // Construim recomandarea detaliata
+    let recomandare = "Recomandarea ta personalizată:\n\n";
+
+    // Partea 1: tip stil de viata
+    if (sedentar) {
+      recomandare += "- Stil de viață sedentar: Este important să începi cu antrenamente ușoare, concentrate pe mobilitate, flexibilitate și cardio de intensitate mică.\n\n";
+    } else {
+      recomandare += "- Stil de viață activ: Poți adopta antrenamente cu intensitate medie spre mare, adaptate experienței și obiectivelor tale.\n\n";
+    }
+
+    // Partea 2: loc antrenament
+    if (preferHome) {
+      recomandare += "- Preferi să te antrenezi acasă: Recomand exerciții funcționale cu greutatea corpului, folosind benzi elastice și greutăți mici.\n\n";
+    } else if (preferGym) {
+      recomandare += "- Preferi sala: Antrenamente cu greutăți libere și aparate, axate pe forță și creștere musculară.\n\n";
+    } else if (preferOutdoors) {
+      recomandare += "- Preferi aer liber: Antrenamente cardio, HIIT și exerciții de mobilitate în aer liber.\n\n";
+    }
+
+    // Partea 3: obiectiv fitness
+    recomandare += `- Obiectiv: ${obiectiv}. Ajustează antrenamentele pentru a susține acest scop.\n\n`;
+
+    // Partea 4: numar zile + plan simplu de antrenament pe săptămână
+    recomandare += `- Plan de antrenament pe ${numarZile} zile/săptămână:\n`;
+
+    if (numarZile <= 2) {
+      recomandare += "  • Ziua 1: Antrenament cardio moderat + exerciții de mobilitate\n  • Ziua 2: Antrenament funcțional cu greutatea corpului\n";
+    } else if (numarZile <= 4) {
+      recomandare += "  • Ziua 1: Antrenament forță – partea superioară\n  • Ziua 2: Cardio și mobilitate\n  • Ziua 3: Antrenament forță – partea inferioară\n  • Ziua 4: Exerciții funcționale și stretching\n";
+    } else {
+      recomandare += "  • Ziua 1: Forță – partea superioară\n  • Ziua 2: Forță – partea inferioară\n  • Ziua 3: Cardio intens (HIIT sau alergare)\n  • Ziua 4: Mobilitate și stretching\n  • Ziua 5: Forță – total corp\n  • Ziua 6: Recuperare activă / yoga\n";
+    }
+
+    // Partea 5: echilibru antrenament/odihna
+    if (echilibruOdihna.includes("esențial")) {
+      recomandare += "\n- Foarte bine că acorzi importanță odihnei – este cheia progresului și recuperării.\n";
+    } else if (echilibruOdihna.includes("mențin")) {
+      recomandare += "\n- Echilibrul între antrenament și odihnă este important, încearcă să-l menții constant.\n";
+    } else {
+      recomandare += "\n- Ai o abordare intensă, dar nu uita să acorzi timp odihnei pentru a evita suprasolicitarea.\n";
+    }
+
+    // Partea 6: Experienta
+    recomandare += `\n- Nivelul tău de experiență: ${experienta}. Adaptăm antrenamentele pentru a fi eficiente și sigure pentru tine.\n\n`;
+
+    recomandare += "Multumesc că ai completat quiz-ul! Dacă dorești un plan personalizat detaliat, contactează-mă.";
+
+    resultEl.textContent = recomandare;
+    restartBtn.style.display = 'inline-block';
+  }
+
+  restartBtn.addEventListener('click', () => {
+    currentIndex = 0;
+    answers = [];
+    questionEl.style.display = '';
+    optionsEl.style.display = '';
+    resultEl.textContent = '';
+    restartBtn.style.display = 'none';
+    progressEl.style.width = '0%';
+    showQuestion();
+  });
+
+  showQuestion();
+</script>
+
+</body>
+</html>
