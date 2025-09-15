@@ -67,6 +67,23 @@
       background: #42a5f5;
       box-shadow: 0 8px 20px rgba(66,165,245,0.9);
     }
+    /* Buton "Pachete" */
+    button#packagesButton {
+      background: #1976d2;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      padding: 15px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 6px 14px rgba(21,101,192,0.7);
+      margin-bottom: 50px;
+    }
+    button#packagesButton:hover {
+      background: #42a5f5;
+      box-shadow: 0 8px 20px rgba(66,165,245,0.9);
+    }
     .form-container {
       max-width: 500px;
       margin: 0 auto 50px;
@@ -135,6 +152,29 @@
       background: #e3f2fd;
       color: #0d47a1;
     }
+    footer {
+      background-color: #1976d2;
+      padding: 20px 0;
+      margin-top: 50px;
+      color: white;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    footer h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    footer p {
+      margin: 5px 0;
+    }
+    footer a {
+      color: #42a5f5;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -166,14 +206,17 @@
   <div class="images-section">
     <img src="antrenament1.jpg" alt="Antrenament 1" class="slide-in left" />
     <img src="antrenament2.jpg" alt="Antrenament 2" class="slide-in right" />
+    <img src="antrenament3.jpg" alt="Antrenament 3" class="slide-in left" />
   </div>
 
   <h3>Completează quiz şi obţine gratuit informaţii</h3>
   <button id="quizButton">Către quiz</button>
+  
+  <!-- Butonul Pachete sub quiz -->
+  <button id="packagesButton">Vezi Pachetele</button>
 
   <div class="form-container">
-      <!-- Am adăugat id="contactForm" pentru referința JS -->
-      <form id="contactForm" action="https://formspree.io/f/xpwljzdo" method="POST" onsubmit="return redirectToThankYou(event)">
+    <form id="contactForm" action="https://formspree.io/f/xpwljzdo" method="POST" onsubmit="return redirectToThankYou(event)">
       <input type="text" name="name" placeholder="Nume Prenume" class="slide-in left" required />
       <input type="email" name="email" placeholder="Adresa de email" class="slide-in right" required />
       <input type="tel" name="phone" placeholder="Telefon" class="slide-in left" />
@@ -191,6 +234,16 @@
     </form>
     <div class="form-success" id="formSuccess">Mulțumesc! Te voi contacta în curând.</div>
   </div>
+
+  <!-- Footer -->
+<footer>
+  <h3>Contact</h3>
+  <p><strong>Nume:</strong> Ilie Vicențiu-Robert</p>
+  <p><strong>Număr telefon:</strong> 0739 554 520</p>
+  <p><strong> SensGym </strong></p>
+  <!-- Link către Google Maps -->
+  <p><a href="https://maps.app.goo.gl/jSUonighWcN2r7dU9" target="_blank" style="color: #42a5f5; text-decoration: none; font-weight: bold;">Vezi locația pe Google Maps</a></p>
+</footer>
 
   <script>
     // Animatie slide-in la scroll
@@ -211,6 +264,11 @@
     // Buton quiz
     document.getElementById('quizButton').addEventListener('click', () => {
       window.location.href = 'quiz.html';
+    });
+
+    // Buton Pachete
+    document.getElementById('packagesButton').addEventListener('click', () => {
+      window.location.href = 'pachete.html';
     });
 
     // Corect referința formularului pentru event listener
